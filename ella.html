@@ -1,0 +1,530 @@
+<html><head><base href="undefined"></head><body><style>/* CSS styles for the login form */
+.login-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas: 
+        "logo logo"
+        "social social"
+        "separator separator"
+        "form form";
+    gap: 2.5rem;
+    max-width: 800px;
+    margin: 80px auto;
+    padding: 3.5rem;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+.login-container::before,
+.login-container::after {
+    content: '';
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.login-container::before {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23d4a373" d="M50 20c0 0-15 20-15 35s7 25 15 25 15-10 15-25S50 20 50 20zm0 70c-8 0-15-10-15-25s15-35 15-35s15 20 15 35-7 25-15 25z"/><circle fill="%23e9c46a" cx="50" cy="45" r="10"/></svg>');
+    top: -60px;
+    left: -60px;
+    transform: rotate(-45deg);
+}
+
+.login-container::after {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23d4a373" d="M50 20c0 0-15 20-15 35s7 25 15 25 15-10 15-25S50 20 50 20zm0 70c-8 0-15-10-15-25s15-35 15-35s15 20 15 35-7 25-15 25z"/><circle fill="%23e9c46a" cx="50" cy="45" r="10"/></svg>');
+    bottom: -60px;
+    right: -60px;
+    transform: rotate(135deg);
+}
+
+.logo {
+    grid-area: logo;
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+}
+
+.social-logos {
+    grid-area: social;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+    max-width: 300px;
+    margin: 1.5rem auto;
+    gap: 2rem;
+    padding: 1rem 0;
+}
+
+.separator {
+    grid-area: separator;
+    text-align: center;
+    margin: 2.5rem 0;
+    padding: 1rem 0;
+    color: #666;
+    position: relative;
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 45%;
+    height: 1px;
+    background-color: #ddd;
+}
+
+.separator::before {
+    left: 0;
+}
+
+.separator::after {
+    right: 0;
+}
+
+.login-form {
+    grid-area: form;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 0.5rem;
+}
+
+.form-group {
+    position: relative;
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 8px;
+    background: #f8f9fa;
+    box-shadow: inset 2px 2px 5px #d1d1d1, inset -2px -2px 5px #ffffff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    margin: 0.5rem 0;
+}
+
+.form-group input:focus {
+    outline: none;
+    box-shadow: inset 4px 4px 8px #d1d1d1, inset -4px -4px 8px #ffffff;
+}
+
+.form-group label {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+    top: -20px;
+    left: 0;
+    font-size: 14px;
+    color: #007bff;
+}
+
+button {
+    padding: 16px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(145deg, #007bff, #0056b3);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1.5rem;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 0.5rem;
+    display: none;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.social-icon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    overflow: hidden;
+    position: relative;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.floating-flowers {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.flower {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23ffffff" d="M50 20c0 0-15 20-15 35s7 25 15 25 15-10 15-25S50 20 50 20zm0 70c-8 0-15-10-15-25s15-35 15-35s15 20 15 35-7 25-15 25z"/><circle fill="%23fff5d6" cx="50" cy="45" r="10"/></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.2;
+    animation: float 20s linear infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translate(0, 100vh) rotate(0deg);
+    }
+    100% {
+        transform: translate(0, -100vh) rotate(360deg);
+    }
+}
+
+.caps-lock-indicator {
+    position: absolute;
+    right: 0;
+    top: -20px;
+    font-size: 12px;
+    color: #ff9800;
+    display: none;
+    background: rgba(255, 152, 0, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 600px) {
+    .login-container {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "logo"
+            "social"
+            "separator"
+            "form";
+        padding: 2rem;
+        margin: 40px 20px;
+        gap: 2rem;
+        max-width: 100%;
+    }
+    
+    .social-logos {
+        gap: 1.5rem;
+        padding: 0.5rem 0;
+    }
+}
+
+/* Optional: Add a two-column layout for larger forms */
+@media (min-width: 601px) {
+    .login-form {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3rem;
+        padding: 1rem 0;
+    }
+    
+    .form-group.full-width {
+        grid-column: 1 / -1;
+    }
+    
+    button[type="submit"] {
+        grid-column: 1 / -1;
+    }
+}
+
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.video-background video {
+    position: absolute;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0.3),
+        rgba(0, 0, 0, 0.5)
+    );
+    backdrop-filter: blur(3px);
+}
+
+/* Update login container for better contrast with video */
+.login-container {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Animation for container entrance */
+@keyframes fadeIn {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-container {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .video-background video {
+        object-position: center;
+    }
+    
+    .video-overlay {
+        background: linear-gradient(
+            45deg,
+            rgba(0, 0, 0, 0.4),
+            rgba(0, 0, 0, 0.6)
+        );
+    }
+}
+</style>
+
+<div class="video-background">
+    <video autoplay muted loop playsinline>
+        <source src="your-video.mp4" type="video/mp4">
+        <source src="your-video.webm" type="video/webm">
+        <source src="your-video.ogg" type="video/ogg">
+    </video>
+    <div class="video-overlay"></div>
+</div>
+
+<div class="login-container">
+    <div class="logo">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" fill="none" stroke="#007bff" stroke-width="2"/>
+            <path d="M50 25C37.297 25 27 35.297 27 48c0 12.703 10.297 23 23 23s23-10.297 23-23c0-12.703-10.297-23-23-23zm0 7c8.837 0 16 7.163 16 16s-7.163 16-16 16-16-7.163-16-16 7.163-16 16-16z" fill="#007bff"/>
+        </svg>
+    </div>
+    
+    <form class="login-form" id="loginForm">
+        <div class="form-group">
+            <input type="email" id="email" placeholder=" " required>
+            <label for="email">Email</label>
+            <div class="error-message" id="emailError">Please enter a valid email address</div>
+        </div>
+        
+        <div class="form-group">
+            <input type="password" id="password" placeholder=" " required>
+            <label for="password">Password</label>
+            <div class="error-message" id="passwordError">Password must be at least 6 characters</div>
+            <div class="caps-lock-indicator" id="capsLockIndicator">Caps Lock is ON</div>
+        </div>
+        
+        <button type="submit">Login</button>
+    </form>
+</div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+    
+    let isValid = true;
+    
+    // Email validation
+    if (!email.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        emailError.style.display = 'block';
+        email.style.animation = 'shake 0.5s ease-in-out';
+        isValid = false;
+    } else {
+        emailError.style.display = 'none';
+    }
+    
+    // Password validation
+    if (password.value.length < 6) {
+        passwordError.style.display = 'block';
+        password.style.animation = 'shake 0.5s ease-in-out';
+        isValid = false;
+    } else {
+        passwordError.style.display = 'none';
+    }
+    
+    // Reset animations
+    setTimeout(() => {
+        email.style.animation = '';
+        password.style.animation = '';
+    }, 500);
+    
+    if (isValid) {
+        // Here you would typically send the data to your server
+        console.log('Form submitted:', {
+            email: email.value,
+            password: password.value
+        });
+        
+        // Simulate successful login
+        alert('Login successful!');
+    }
+});
+</script>
+
+<script>
+// Add this before the existing login form script
+const flowerContainer = document.createElement('div');
+flowerContainer.className = 'floating-flowers';
+document.body.appendChild(flowerContainer);
+
+// Create 15 floating flowers
+for (let i = 0; i < 15; i++) {
+    const flower = document.createElement('div');
+    flower.className = 'flower';
+    
+    // Random starting position
+    flower.style.left = `${Math.random() * 100}%`;
+    
+    // Random animation duration between 15 and 25 seconds
+    flower.style.animationDuration = `${15 + Math.random() * 10}s`;
+    
+    // Random delay so they don't all start at once
+    flower.style.animationDelay = `${Math.random() * -20}s`;
+    
+    // Random size between 20px and 60px
+    const size = 20 + Math.random() * 40;
+    flower.style.width = `${size}px`;
+    flower.style.height = `${size}px`;
+    
+    flowerContainer.appendChild(flower);
+}
+</script>
+
+<script>
+document.getElementById('password').addEventListener('keydown', function(e) {
+    const capsLockIndicator = document.getElementById('capsLockIndicator');
+    
+    if (e.getModifierState('CapsLock')) {
+        capsLockIndicator.style.display = 'block';
+    } else {
+        capsLockIndicator.style.display = 'none';
+    }
+});
+
+// Also check when the window gains focus
+window.addEventListener('focus', function(e) {
+    const capsLockIndicator = document.getElementById('capsLockIndicator');
+    
+    if (e.getModifierState && e.getModifierState('CapsLock')) {
+        capsLockIndicator.style.display = 'block';
+    } else {
+        capsLockIndicator.style.display = 'none';
+    }
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const video = document.querySelector('.video-background video');
+    
+    // Handle video loading errors
+    video.addEventListener('error', function() {
+        document.querySelector('.video-background').style.display = 'none';
+        document.body.style.background = 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)';
+        document.body.style.backgroundSize = '400% 400%';
+        document.body.style.animation = 'gradient 15s ease infinite';
+    });
+    
+    // Ensure video plays on mobile
+    video.play().catch(function(error) {
+        console.log("Video autoplay failed:", error);
+    });
+});
+</script>
+
+<script>
+// Optional: Add animation for gradient background fallback
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+</script>
+</body></html>
